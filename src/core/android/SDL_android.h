@@ -31,9 +31,13 @@ extern "C" {
 #include <EGL/eglplatform.h>
 #include <android/native_window_jni.h>
 
+#include "SDL_android_common.h"
+
 #include "SDL_audio.h"
 #include "SDL_rect.h"
 #include "SDL_video.h"
+
+#include "sdl_android_audio.h"
 
 /* Interface from the SDL library into the Android Java activity */
 extern void Android_JNI_SetActivityTitle(const char *title);
@@ -50,16 +54,6 @@ extern ANativeWindow *Android_JNI_GetNativeWindow(void);
 
 extern SDL_DisplayOrientation Android_JNI_GetDisplayOrientation(void);
 extern int Android_JNI_GetDisplayDPI(float *ddpi, float *xdpi, float *ydpi);
-
-/* Audio support */
-extern void Android_DetectDevices(void);
-extern int Android_JNI_OpenAudioDevice(int iscapture, int device_id, SDL_AudioSpec *spec);
-extern void *Android_JNI_GetAudioBuffer(void);
-extern void Android_JNI_WriteAudioBuffer(void);
-extern int Android_JNI_CaptureAudioBuffer(void *buffer, int buflen);
-extern void Android_JNI_FlushCapturedAudio(void);
-extern void Android_JNI_CloseAudioDevice(const int iscapture);
-extern void Android_JNI_AudioSetThreadPriority(int iscapture, int device_id);
 
 /* Detecting device type */
 extern SDL_bool Android_IsDeXMode(void);

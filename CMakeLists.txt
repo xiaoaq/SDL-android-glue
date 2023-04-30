@@ -473,6 +473,7 @@ dep_option(SDL_HIDAPI_JOYSTICK     "Use HIDAPI for low level joystick drivers" O
 dep_option(SDL_VIRTUAL_JOYSTICK    "Enable the virtual-joystick driver" ON SDL_HIDAPI OFF)
 set_option(SDL_LIBUDEV             "Enable libudev support" ON)
 set_option(SDL_ASAN                "Use AddressSanitizer to detect memory errors" OFF)
+set_option(SDL_ANDROID_AUDIO_STRIPPED "Build a fat-free version of Android library which only includes audio components" OFF)
 option_string(SDL_VENDOR_INFO      "Vendor name and/or version to add to SDL_REVISION" "")
 set_option(SDL_CCACHE              "Use Ccache to speed up build" ON)
 
@@ -1200,7 +1201,29 @@ endif()
 
 # Platform-specific options and settings
 if(ANDROID)
-  file(GLOB ANDROID_CORE_SOURCES ${SDL2_SOURCE_DIR}/src/core/android/*.c)
+  if (SDL_ANDROID_AUDIO_STRIPPED)
+    file(GLOB ANDROID_CORE_SOURCES ${SDL2_SOURCE_DIR}/src/core/android/*_audio.c)
+    set_property(SOURCE ${ANDROID_CORE_SOURCES} APPEND_STRING PROPERTY COMPILE_FLAGS " -DSDL_ANDROID_AUDIO_STRIPPED=1")
+    list(APPEND SOURCE_FILES ${ANDROID_CORE_SOURCES})
+
+    file(GLOB ANDROID_CORE_SOURCES ${SDL2_SOURCE_DIR}/src/core/android/*_common.c)
+
+    list(APPEND EXTRA_LIBS dl log android)
+
+    find_package(Java REQUIRED)
+    include(UseJava)
+    # here we compile java files to jar file
+    set(JAVA_SOURCE_DIR ${SDL2_SOURCE_DIR}/android-project/app/src/main/java/org/libsdl/app)
+    file(GLOB JAVA_SRC_FILES ${JAVA_SOURCE_DIR}/SDLAudioManager.java)
+
+    message(${ANDROID_PLATFORM})
+    set(CMAKE_JAVA_COMPILE_FLAGS -source "8")
+    add_jar(SDL2Android ${JAVA_SRC_FILES} INCLUDE_JARS ${ANDROID_SDK}/platforms/android-33/android.jar)
+
+    install_jar(SDL2Android ${INSTALL_JARS_PATH})
+  else()
+    file(GLOB ANDROID_CORE_SOURCES ${SDL2_SOURCE_DIR}/src/core/android/*.c)
+  endif()
   list(APPEND SOURCE_FILES ${ANDROID_CORE_SOURCES} ${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
   set_property(SOURCE "${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c" APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-declaration-after-statement")
 

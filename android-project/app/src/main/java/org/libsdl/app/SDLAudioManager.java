@@ -1,5 +1,9 @@
 package org.libsdl.app;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.Context;
 import android.media.AudioDeviceCallback;
 import android.media.AudioDeviceInfo;
@@ -23,6 +27,10 @@ public class SDLAudioManager {
     private static final int[] NO_DEVICES = {};
 
     private static AudioDeviceCallback mAudioDeviceCallback;
+
+    static {
+        System.loadLibrary("SDL2");
+    }
 
     public static void initialize() {
         mAudioTrack = null;
@@ -505,10 +513,29 @@ public class SDLAudioManager {
         }
     }
 
+    /**
+     * This method is called by SDL using JNI.
+     */
+    public static void requestPermission(String permission, int requestCode) {
+        if (Build.VERSION.SDK_INT < 23) {
+            nativePermissionResult(requestCode, true);
+            return;
+        }
+
+        Activity activity = (Activity)mContext;
+        if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(new String[]{permission}, requestCode);
+        } else {
+            nativePermissionResult(requestCode, true);
+        }
+    }
+
     public static native int nativeSetupJNI();
 
     public static native void removeAudioDevice(boolean isCapture, int deviceId);
 
     public static native void addAudioDevice(boolean isCapture, int deviceId);
+
+    public static native void nativePermissionResult(int requestCode, boolean result);
 
 }
