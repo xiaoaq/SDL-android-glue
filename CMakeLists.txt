@@ -1216,9 +1216,8 @@ if(ANDROID)
     set(JAVA_SOURCE_DIR ${SDL2_SOURCE_DIR}/android-project/app/src/main/java/org/libsdl/app)
     file(GLOB JAVA_SRC_FILES ${JAVA_SOURCE_DIR}/SDLAudioManager.java)
 
-    message(${ANDROID_PLATFORM})
     set(CMAKE_JAVA_COMPILE_FLAGS -source "8")
-    add_jar(SDL2Android ${JAVA_SRC_FILES} INCLUDE_JARS ${ANDROID_SDK}/platforms/android-33/android.jar)
+    add_jar(SDL2Android ${JAVA_SRC_FILES} INCLUDE_JARS ${ANDROID_SDK}/platforms/${ANDROID_JAVA_PLATFORM_API}/android.jar)
 
     install_jar(SDL2Android ${INSTALL_JARS_PATH})
   else()
