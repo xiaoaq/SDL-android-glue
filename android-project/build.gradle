@@ -4,6 +4,11 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://maven.aliyun.com/repository/google'}
+		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central'}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
@@ -17,6 +22,11 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://maven.aliyun.com/repository/google'}
+		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central'}
     }
 }
 
