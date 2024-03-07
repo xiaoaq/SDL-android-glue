@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        mavenCentral()
-        google()
+        // mavenCentral()
+        // google()
         maven { url 'https://maven.aliyun.com/repository/google'}
 		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
@@ -11,7 +11,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/central'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,8 +20,8 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
-        google()
+        // mavenCentral()
+        // google()
         maven { url 'https://maven.aliyun.com/repository/google'}
 		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
